@@ -1,0 +1,11 @@
+{% extends "blog/base.html" %}
+{% block content %}
+<form class="form-group" method="POST">
+    <div class="border-top pt-3">
+        You Have Been Loged Out
+        <small class="text-muted">
+            <a class='ml-2' href="{% url 'login' %}">Log In Again</a>
+        </small>
+    </div>
+</form>
+{% endblock content%}

@@ -1,0 +1,128 @@
+{% extends "blog/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="p-3">
+    <form class="form-group" method="POST" enctype='multipart/form-data' >
+        {% csrf_token %}
+        <fieldset>
+            <legend class='border-bottom mb-4'>Update Profile</legend>
+            {% for field in p_form %}
+                {% if field.name == 'image' %}
+                    <div class="row w-100 p-2 ml-0 d-flex flex-row ">            
+                        <div class="media-left">
+                            <img class="img-fluid" style="width:100px; margin: 10px;" src="{{user.profile.image.url}}"> 
+                        </div>
+                        <div class="media-body">
+                            <h5 class="text-primary pt-4 ">Update Profile Picture</h3>
+                            <input class='pt-1' type="file" name="image" accept="image/*" id="id_image"><br>
+                            <input type="checkbox" name="image-clear" id="image-clear_id">
+                            <label for="image-clear_id">Remove</label>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+            <hr>
+            {% for field in u_form %}
+                <div class="d-flex flex-row media">
+                    <div class="p-auto m-auto w-25 media-left">
+                        {{field.label}}
+                    </div>
+                    <div class="wrap-input100 media-right" >
+                        <input class="input100" type="text" name="{{field.name}}" value="{{field.value}}" placeholder="{{field.label}}">
+                        <span class="focus-input100"></span>
+                        <span class="symbol-input100">
+                        {% if field.name == 'email' %}    
+                            <i class="fa fa-envelope" aria-hidden="true"></i>
+                        {% else %}
+                            <i class="fa fa-user" aria-hidden="true"></i>
+                        {% endif %}
+                        </span>
+                    </div>
+                </div>
+                <div class='pl-5 m-auto'>{{field.help_text}}</div>
+                
+                {% if field.errors %}
+                <div class="alert alert-danger" role="alert">
+                    <ul class='ml-5 form-errors'>
+                        {% for error in field.errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+                {% if field.non_field_errors %}
+                <div class="alert alert-danger" role="alert">
+                    <ul class=' ml-5 form-errors'>
+                        {% for error in field.non_field_errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <br>
+                {% endif %}
+            {% endfor %}
+            {% for field in p_form %}
+                {% if field.name == 'dob' %}
+                    <div class="d-flex flex-row">
+                        <div class="p-auto m-auto w-25">
+                            {{field.label}}
+                        </div>
+                        <div class="wrap-input100" >
+                            <input class="input100" id='id_dob' type="text" name="{{field.name}}" value="{{field.value|date:'Y-m-d'}}">
+                            <span class="focus-input100"></span>
+                            <span class="symbol-input100">
+                                <i class="fa fa-calendar" aria-hidden="true"></i>
+                            </span>
+                        </div>
+                    </div>
+                {% endif %}
+                {% if field.name == 'address'%}
+                <div class="d-flex flex-row">
+                    <div class="p-auto m-auto w-25">
+                        {{field.label}}
+                    </div>
+                    <div class="wrap-input100" >
+                        <input class="input100"  type="text" name="{{field.name}}" value="{{field.value}}" placeholder="{{field.label}}">
+                        <span class="focus-input100"></span>
+                        <span class="symbol-input100">
+                            <i class="fa fa-home" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                </div>
+                {% endif %}
+                
+                <div class="pl-5 m-auto">{{field.help_text}}</div>
+                {% if field.errors %}
+                <div class="alert alert-danger" role="alert">
+                    <ul class='ml-5 form-errors'>
+                        {% for error in field.errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+                {% if field.non_field_errors %}
+                <div class="alert alert-danger" role="alert">
+                    <ul class='ml-5 form-errors'>
+                        {% for error in field.non_field_errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+                <br>
+            {% endfor %}
+            <div class="d-flex flex-row">
+                <div class="p-auto m-auto w-25">
+                    Change Password
+                </div>
+                <div class="wrap-input100" >
+                    <a href="{% url 'change_password' %}" class="text-decoration-none text-primary">Change Password</a>
+                </div>
+            </div>
+        </fieldset>
+        <br>
+        <button class="btn btn-outline-info" type="submit">Update</button>
+    </form>
+</div>
+{% endblock content%}

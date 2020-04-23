@@ -1,0 +1,61 @@
+{% extends "blog/base.html" %}
+{% block content %}
+<div class="md-6">
+    <div class="col no-gutters border rounded overflow-hidden p-0 flex-md-row mb-2 shadow-sm h-md-250 position-relative">
+        <div class="w-100 d-flex flex-column position-static">
+            <div class="row w-100 p-2 ml-0 d-flex flex-row ">            
+                <div class="media-left" style="height: 55px;overflow:hidden;">
+                    <img class=" img-fluid" style="width:50px; margin: 10px;" src="{{user.profile.image.url}}"> 
+                </div>
+                <div class="media-body w-50">
+                    <strong class="d-inline-block mt-2 mb-2 text-primary w-50"><a href="{% url 'profile' user.id %}" class="text-decoration-none">{{user.username}}</a></strong>
+                </div>
+            </div>
+            <form class="form-group" method="POST" enctype="multipart/form-data">
+                {%csrf_token%}
+                <div class="media-body m-3">
+                {% if object.image %}
+                    <div class="">
+                        <img class=" img-fluid" style="margin: 10px;" src="{{object.image.url}}"> 
+                    </div>
+                {% endif %}
+                {% for field in u_form %}
+                    {% if field.name == 'title' %}
+                        <div class="wrap-input100 " >
+                            <label class="h4">Title</label><br>
+                            <input class="input100" type="text" value="{{field.value}}" name="{{field.name}}">
+                        </div>
+                    {% endif %}
+                    {% if field.name == 'content' %}
+                        <div class="wrap-input100 " >
+                            <label class="h4">Content</label><br>
+                            <textarea style="min-height: 100px;" class="input100 pl-5 p-2" type="text" name="{{field.name}}">{{field.value}}</textarea>
+                        </div>
+                    {% endif %}
+                    {% if field.name == 'image' %}
+                        <div class="wrap-input100 " style="display:inline-flex;" >
+                            <label" class="pt-4 pl-3 pr-5">Image</label><br>
+                            <input type="file" name="image" accept="image/*" class=" clearablefileinput form-control-file " id="id_image">
+                        </div>
+                    {% endif %}
+                    {% if form.non_field_errors %}
+                    <div class="alert alert-danger" role="alert">
+                        <ul class='form-errors'>
+                            {% for error in form.non_field_errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
+                {% endfor %}
+                </div>
+                <div class="container-login100-form-btn">
+                    <button class="login100-form-btn w-50">
+                        Update
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock content%}

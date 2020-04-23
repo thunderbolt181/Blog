@@ -1,0 +1,100 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="author" content="sachin baghel">
+    <meta name="viewport" content="width=device-width">
+    <meta name="keyword" content="Blog-Post">
+    <meta name="desctiption" content="ThunderBlog">
+    <!-- Bootstrap,CSS -->
+    <link rel="icon" type="image/png" href="{% static 'blog/images/icons/favicon.ico'%}"/>
+	<link rel="stylesheet" type="text/css" href="{% static 'blog/vendor/bootstrap/css/bootstrap.min.css'%}">
+	<link rel="stylesheet" type="text/css" href="{% static 'blog/fonts/font-awesome-4.7.0/css/font-awesome.min.css'%}">
+	<link rel="stylesheet" type="text/css" href="{% static 'blog/vendor/animate/animate.css'%}">
+	<link rel="stylesheet" type="text/css" href="{% static 'blog/vendor/css-hamburgers/hamburgers.min.css'%}">
+	<link rel="stylesheet" type="text/css" href="{% static 'blog/vendor/select2/select2.min.css'%}">
+	<link rel="stylesheet" type="text/css" href="{% static 'blog/css/util.css'%}">
+	<link rel="stylesheet" type="text/css" href="{% static 'blog/css/main.css'%}">
+    <!-- Title -->
+    {% if title %}
+        <title>ThunderBlog || {{title}}</title>
+    {% else %}
+        <title>ThunderBlog</title>
+    {% endif %}
+</head>
+<body>
+    <!-- NavBar -->
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+        <div class="container">
+            <div class='navbar-brand'>
+                <img src="{% static 'blog/images/Logo.png' %}" style="width: 50px;" alt="Logo">
+                <a class="navbar-brand font-weight-bolder" href="{% url 'blog-home' %}">ThunderBlog</a>
+            </div>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="navbar-nav mr-auto">
+                    {% if user.is_authenticated %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'blog-home' %}">Home <span class="sr-only">(current)</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'profile' user.id %}">Profile</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'register' %}">Register</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'login' %}">Sign In</a>
+                        </li>
+                    {% endif %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'blog-about' %}">About</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav> 
+    <!-- Main Section -->
+    <div class="limiter">
+		<div class="container-login100">
+			<div class="wrap-login100" style="padding: 10px;">
+				<div class="w-100">
+                    <div class="posts  mb-2 ">
+                        {% block content %}{% endblock content %}  
+                    </div>
+                </div>
+                <div class=" sidebar">
+                    <div class="text-white mb-4 rounded h-md-250 p-3">
+                        {% block sidebar %}{% endblock sidebar %}
+                    </div>
+                </div>
+			</div>
+		</div>
+	</div>
+
+    <!-- Footer -->
+    <footer class="footer mt-auto py-3 bg-dark">
+        <div class="container " style="text-align: center;">
+            <span class="text-muted">Created By Parzival</span>
+        </div>
+    </footer>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="{% static 'blog/vendor/jquery/jquery-3.2.1.min.js'%}"></script>
+	<script src="{% static 'blog/vendor/bootstrap/js/popper.js'%}"></script>
+	<script src="{% static 'blog/vendor/bootstrap/js/bootstrap.min.js'%}"></script>
+	<script src="{% static 'blog/vendor/select2/select2.min.js'%}"></script>
+    <script src="{% static 'blog/vendor/tilt/tilt.jquery.min.js'%}"></script>
+    <!-- <script src="{% static 'blog/js/jquery.waypoints.min.js' %}"></script>
+    <script src="{% static 'blog/js/infinite.min.js' %}"></script> -->
+	<script src="{% static 'blog/js/main.js'%}"></script>
+</body>
+</html>

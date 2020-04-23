@@ -1,0 +1,97 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+	<div >
+        <div class="p-0 mb-5 pt-5 d-flex justify-content-center custom">
+            <div class="login100-pic mt-5 mr-5 js-tilt " data-tilt>
+                <img class="img-fluid" src="{{user.profile.image.url}}" alt="IMG">
+            </div>
+            <div class="login100-form ml-3">
+                <div class="media">
+                    <div class="media-body">
+                        <h2 class="account-heading">{{user.username}}</h2>
+                        <p class="text-secondary mb-0">{{user.email}}</p>
+                        {% if edit_show %}
+                            <p><a class="text-primary" href="{% url 'profile-update' %}">Edit Profile</a></p>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <tr>
+                            <th>
+                                Name
+                            </th>
+                            <th>
+                                {{user.first_name}} {{user.last_name}}
+                            </th>
+                        </tr>
+                        <tr>
+                            <th>
+                                DOB
+                            </th>
+                            <th>
+                                {{ user.profile.dob }}
+                            </th>
+                        </tr>
+                        <tr>
+                            <th>
+                                Address
+                            </th>
+                            <th>
+                                {{ user.profile.address }}
+                            </th>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="alert alert-info h2">{{user.username}} Posts</div>
+        {% for post in posts %}
+            <div class="md-6">
+                <div class="col no-gutters border rounded overflow-hidden flex-md-row mb-2 shadow-sm h-md-250 position-relative">
+                    <div class="col w-100 p-2 d-flex flex-column position-static">
+                        <div class="row w-100 d-flex flex-row position-static">
+                            <div class="media-left" style="max-height: 55px;overflow:hidden;">
+                                <img class=" img-fluid" style="width:50px; margin: 10px;" src="{{post.author.profile.image.url}}"> 
+                            </div>
+                            <div class="media-body">
+                                <strong class="d-inline-block mt-2 mb-2 text-primary w-50"><a href="{% url 'profile' post.author.id %}" class="text-decoration-none">{{post.author}}</a></strong>
+                            </div>
+                            <div class="mb-1 w-50 mt-2 text-right text-muted">{{post.Date|date:"F d,Y"}}</div>
+                        </div>
+                        {% if post.image %}
+                        <div class="w-100 " style="max-height: 300px;overflow:hidden;">
+                        <a href="{% url 'detail-view' post.id %}"><img class="img-fluid " style="max-height: 300px;margin: 10px;" src="{{post.image.url}}"> </a>
+                        </div>
+                        {% endif %}
+                        <h3 class="mb-0"><a href="{% url 'detail-view' post.id %}" class="article-title text-decoration-none text-dark">{{post.title}}</a></h3>
+                        <p class="card-text m-4">{{post.content}}</p>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+        {% if posts.has_other_pages %}
+        <ul class="pagination">
+            {% if posts.has_previous %}
+                <li><a class="text-primery" href="?page={{ posts.previous_page_number }}"><button class='btn btn-outline-info'>&laquo;</button></a></li>
+            {% else %}
+                <li class="disabled"><button class='btn btn-secondary btn-outline-secondary'><span>&laquo;</span></button></li>
+            {% endif %}
+            {% for i in posts.paginator.page_range %}
+                {% if posts.number == i %}
+                    <li class="active"><button class='btn btn-success btn-outline-success'><span>{{ i }} </span></button></li>
+                {% else %}
+                    <li><a href="?page={{ i }}"><button class='btn btn-outline-info'>{{ i }}</button></a></li>
+                {% endif %}
+            {% endfor %}
+            {% if posts.has_next %}
+                <li><a href="?page={{ posts.next_page_number }}"><button class='btn btn-outline-info'>&raquo;</button></a></li>
+            {% else %}
+                <li class="disabled"><button class='btn btn-secondary btn-outline-secondary'><span>&raquo;</span></button></li>
+            {% endif %}
+        </ul>
+    {% endif %}
+	</div>
+{% endblock content%}
