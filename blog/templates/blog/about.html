@@ -1,20 +1,44 @@
 {% extends 'blog/base.html' %}
 {% block content %}
-    <div class="block">
-        <p class="p-2 row no-gutters border rounded overflow-hidden flex-md-row mb-2 shadow-sm h-md-250">Lorem ipsum dolor sit amet consectetur, 
-            adipisicing elit. Ratione eveniet magnam deserunt illum? 
-            Reprehenderit illum vel qui eligendi, 
-            sequi earum mollitia dicta ex velit! Id non illum quod fugit est?
-            Lorem ipsum dolor sit amet consectetur, 
-            adipisicing elit. Ratione eveniet magnam deserunt illum? 
-            Reprehenderit illum vel qui eligendi, 
-            sequi earum mollitia dicta ex velit! Id non illum quod fugit est?
-            Lorem ipsum dolor sit amet consectetur, 
-            adipisicing elit. Ratione eveniet magnam deserunt illum? 
-            Reprehenderit illum vel qui eligendi, 
-            sequi earum mollitia dicta ex velit! Id non illum quod fugit est?
-            <strong class="w-100 d-inline-block mb-2 text-primary" style="text-align: center;">This Site is Presented By Parzival</strong>
-        </p>
+<div class="w-100 ">
+    <div class="posts mb-2 w-100">
+        <div class="block">
+            <p class="p-2 row no-gutters border rounded overflow-hidden flex-md-row mb-2 shadow-sm h-md-250">Lorem ipsum dolor sit amet consectetur, 
+                adipisicing elit. Ratione eveniet magnam deserunt illum? 
+                Reprehenderit illum vel qui eligendi, 
+                sequi earum mollitia dicta ex velit! Id non illum quod fugit est?
+                Lorem ipsum dolor sit amet consectetur, 
+                adipisicing elit. Ratione eveniet magnam deserunt illum? 
+                Reprehenderit illum vel qui eligendi, 
+                sequi earum mollitia dicta ex velit! Id non illum quod fugit est?
+                Lorem ipsum dolor sit amet consectetur, 
+                adipisicing elit. Ratione eveniet magnam deserunt illum? 
+                Reprehenderit illum vel qui eligendi, 
+                sequi earum mollitia dicta ex velit! Id non illum quod fugit est?
+                <strong class="w-100 d-inline-block mb-2 text-primary" style="text-align: center;">This Site is Presented By Parzival</strong>
+            </p>
+        </div>
     </div>
+</div>
+{% endblock %}
+{% block sidebar %}
+<div class="sidebar custom">
+    <div class="text-white mb-4 mr-2 rounded h-md-250">
+    <div class="md-6 mt-0">
+        <div class="col no-gutters border rounded overflow-hidden p-0 flex-md-row mb-2 shadow-sm h-md-250 position-relative">
+            <div class="w-100 d-flex flex-column position-static">
+                <div class="row w-100 p-2 ml-0 d-flex flex-col ">            
+                    <div class=" w-100" style="overflow:hidden;">
+                        <img class=" img-fluid" src="{{user.profile.image.url}}"> 
+                    </div>
+                    <div class="w-100">
+                        <strong class="d-inline-block my-2 text-primary h1"><a href="{% url 'profile' user.id %}" class="text-primary h6 text-decoration-none">{{user.username}}</a></strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
 {% endblock %}
 

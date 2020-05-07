@@ -10,6 +10,7 @@ urlpatterns = [
     path('update-post/<post_id>/', views.UpdatePost, name='update-post'),
     path('post/<post_id>/', views.PostDetailView, name='detail-view'),
     path('about/', views.about, name="blog-about"),
+    path('search-result/',views.search_fun,name='search'),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG: 

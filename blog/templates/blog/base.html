@@ -35,27 +35,32 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarCollapse">
-                <ul class="navbar-nav mr-auto">
+                <div class="w-100">
+                    {% if user.is_authenticated %}
+                        <form class="form-inline mt-2 mt-md-0" action="{% url 'search' %}" method="GET" >
+                            <input class="form-control w-75 mr-sm-2" type="text" value='{{search}}' placeholder="Search Users" name='q'>
+                            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                        </form>
+                    {% endif %}
+                </div>
+                <ul class="navbar-nav">
                     {% if user.is_authenticated %}
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'blog-home' %}">Home <span class="sr-only">(current)</span></a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'profile' user.id %}">Profile</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'logout' %}">Logout</a>
-                        </li>
-                    {% else %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'register' %}">Register</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'login' %}">Sign In</a>
-                        </li>
                     {% endif %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'blog-about' %}">About</a>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link fa fa-cog" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
+                        <div class="dropdown-menu" aria-labelledby="dropdown01">
+                            {% if user.is_authenticated %}
+                                <a class="dropdown-item" href="{% url 'profile' request.user.id %}">Profile</a>
+                                <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+                            {% else %}
+                                <a class="dropdown-item" href="{% url 'register' %}">Register</a>
+                                <a class="dropdown-item" href="{% url 'login' %}">Sign In</a>
+                            {% endif %}
+                            <a class="dropdown-item" href="{% url 'blog-about' %}">About</a>
+                        </div>
                     </li>
                 </ul>
             </div>
@@ -64,25 +69,18 @@
     <!-- Main Section -->
     <div class="limiter">
 		<div class="container-login100">
-			<div class="wrap-login100" style="padding: 10px;">
-				<div class="w-100">
-                    <div class="posts  mb-2 ">
-                        {% block content %}{% endblock content %}  
-                    </div>
-                </div>
-                <div class=" sidebar">
-                    <div class="text-white mb-4 rounded h-md-250 p-3">
-                        {% block sidebar %}{% endblock sidebar %}
-                    </div>
+            <div class="wrap-login100 w-100" style="padding: 10px;">
+                <div class="d-flex flex-row w-100">
+                    {% block sidebar %}{% endblock sidebar %}
+                    {% block content %}{% endblock content %}  
                 </div>
 			</div>
 		</div>
 	</div>
-
     <!-- Footer -->
     <footer class="footer mt-auto py-3 bg-dark">
         <div class="container " style="text-align: center;">
-            <span class="text-muted">Created By Parzival</span>
+            <span class="text-muted">Created By Thunderbolt</span>
         </div>
     </footer>
     <!-- Optional JavaScript -->

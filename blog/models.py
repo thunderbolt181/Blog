@@ -10,6 +10,7 @@ class Post(models.Model):
     Date=models.DateTimeField(default=timezone.now)
     author=models.ForeignKey(User, on_delete=models.CASCADE)
     image=models.ImageField(default="",blank=True,upload_to='post_images')
+    status=models.TextField(max_length=20,blank=True)
 
     def __str__(self):
         return self.title

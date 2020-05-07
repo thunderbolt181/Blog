@@ -9,6 +9,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render, redirect
 from blog.models import Post
 from django.contrib.auth.models import User
+import os
 
 def register(request):
     if request.method == "POST":
@@ -37,18 +38,25 @@ def profile(request, post_author_id):
         posts = paginator.page(1)
     except EmptyPage:
         posts = paginator.page(paginator.num_pages)
-    context = {'user':user,'posts':posts[::-1],'edit_show':edit_show}
+    context ={'user':user,'posts':posts[::-1],'edit_show':edit_show,"title":request.user.username}
     return render(request,'users/profile.html',context)
 
 @login_required
 def profile_update(request):
     if request.method == "POST":
+        image_url=request.user.profile.image.path
         u_form = EditUserForm(request.POST, instance=request.user)
         p_form = EditProfileForm(request.POST, request.FILES, instance=request.user.profile)
         if u_form.is_valid() and p_form.is_valid():
+            os.remove(image_url)
             u_form.save()
             p_form.save()
-            redirect('profile',request.user.id)
+            if "media"+str(p_form.cleaned_data['image']) not in request.user.profile.image.url:
+                Post(image=p_form.cleaned_data['image'],
+                   status='Updated Proile Picture',
+                   Date=timezone.now(),
+                   author=request.user).save()
+            return redirect('profile',post_author_id=request.user.id)
     else:
         u_form = EditUserForm(instance=request.user)
         p_form = EditProfileForm(instance=request.user.profile)

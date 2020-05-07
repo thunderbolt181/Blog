@@ -1,35 +1,59 @@
 {% extends "blog/base.html" %}
 {% block content %}
-<div class="md-6">
-    <div class="col no-gutters border rounded overflow-hidden flex-md-row mb-2 shadow-sm h-md-250 position-relative">
-        <div class="col w-100 p-4 d-flex flex-column position-static">
-            <div class="row w-100 p-2 d-flex flex-row position-static">
-                <div class="media-left" style="max-height: 55px;overflow:hidden;">
-                    <img class=" img-fluid" style="width:50px; margin: 10px;" src="{{object.author.profile.image.url}}"> 
+<div class="w-100 ">
+    <div class="posts mb-2 w-100">
+        <div class="md-6">
+            <div class="col no-gutters border rounded overflow-hidden flex-md-row mb-2 shadow-sm h-md-250 position-relative">
+                <div class="col w-100 p-4 d-flex flex-column position-static">
+                    <div class="row w-100 p-2 d-flex flex-row position-static">
+                        <div class="media-left" style="max-height: 55px;overflow:hidden;">
+                            <img class=" img-fluid" style="width:50px; margin: 10px;" src="{{object.author.profile.image.url}}"> 
+                        </div>
+                        <div class="media-body">
+                            <strong class="d-inline-block mt-2 mb-2 text-primary w-50"><a href="{% url 'profile' object.author.id %}" class="text-decoration-none">{{object.author}}</a></strong>
+                        </div>
+                        <div class="mb-1 w-50 mt-2 text-right text-muted">{{object.Date|date:"F d,Y"}}</div>
+                    </div>
+                    <h3 class="mb-0 article-title">{{object.title}}</h3>
+                    {% if object.image %}
+                        <div class="">
+                            <img class=" img-fluid" style="margin: 10px;" src="{{object.image.url}}"> 
+                        </div>
+                    {% endif %}
+                    <p class="card-text m-4">{{object.content}}</p>
+                    {% if object.author == user %}
+                    <div class="d-flex flex-row">
+                        <form action="{% url 'update-post' object.id %}" method ="GET">
+                                <button class="btn btn-outline-info mr-1" >Update</button>
+                        </form>
+                        <form action="{% url 'delete-post' object.id %}" method ="GET">
+                            <button class="btn btn-outline-danger mr-1" >Delete</button>
+                        </form>
+                    </div>
+                    {% endif %}
                 </div>
-                <div class="media-body">
-                    <strong class="d-inline-block mt-2 mb-2 text-primary w-50"><a href="{% url 'profile' object.author.id %}" class="text-decoration-none">{{object.author}}</a></strong>
-                </div>
-                <div class="mb-1 w-50 mt-2 text-right text-muted">{{object.Date|date:"F d,Y"}}</div>
             </div>
-            <h3 class="mb-0 article-title">{{object.title}}</h3>
-            {% if object.image %}
-                <div class="">
-                    <img class=" img-fluid" style="margin: 10px;" src="{{object.image.url}}"> 
-                </div>
-            {% endif %}
-            <p class="card-text m-4">{{object.content}}</p>
-            {% if object.author == user %}
-            <div class="d-flex flex-row">
-                <form action="{% url 'update-post' object.id %}" method ="GET">
-                        <button class="btn btn-outline-info mr-1" >Update</button>
-                </form>
-                <form action="{% url 'delete-post' object.id %}" method ="GET">
-                    <button class="btn btn-outline-danger mr-1" >Delete</button>
-                </form>
-            </div>
-            {% endif %}
         </div>
     </div>
 </div>
 {% endblock content%}
+{% block sidebar %}
+<div class="sidebar custom">
+    <div class="text-white mb-4 mr-2 rounded h-md-250">
+    <div class="md-6 mt-0">
+        <div class="col no-gutters border rounded overflow-hidden p-0 flex-md-row mb-2 shadow-sm h-md-250 position-relative">
+            <div class="w-100 d-flex flex-column position-static">
+                <div class="row w-100 p-2 ml-0 d-flex flex-col ">            
+                    <div class=" w-100" style="overflow:hidden;">
+                        <img class=" img-fluid" src="{{user.profile.image.url}}"> 
+                    </div>
+                    <div class="w-100">
+                        <strong class="d-inline-block my-2 text-primary h1"><a href="{% url 'profile' user.id %}" class="text-primary h6 text-decoration-none">{{user.username}}</a></strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+{% endblock %}

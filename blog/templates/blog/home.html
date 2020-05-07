@@ -1,69 +1,114 @@
 {% extends "blog/base.html" %}
-{% load crispy_forms_tags %}
 {% block content %}
-<div class="md-6">
-    <div class="col no-gutters border rounded overflow-hidden p-0 flex-md-row mb-2 shadow-sm h-md-250 position-relative">
-        <div class="w-100 d-flex flex-column position-static">
-            <div class="row w-100 p-2 ml-0 d-flex flex-row ">            
-                <div class="media-left " style="max-height: 55px;overflow:hidden;">
-                    <img class=" img-fluid" style="width:50px; margin: 10px;" src="{{user.profile.image.url}}"> 
+<div class="w-100 ">
+    <div class="posts mb-2 w-100">
+        <div class="md-6">
+            <div class="col no-gutters border rounded overflow-hidden p-0 flex-md-row mb-2 shadow-sm h-md-250 position-relative">
+                <div class="w-100 d-flex flex-column position-static">
+                    <div class="row w-100 p-2 ml-0 d-flex flex-row ">            
+                        <div class="media-left " style="max-height: 55px;overflow:hidden;">
+                            <img class=" img-fluid" style="width:50px; margin: 10px;" src="{{user.profile.image.url}}"> 
+                        </div>
+                        <div class="media-body w-50">
+                            <strong class="d-inline-block mt-2 mb-2 text-primary w-100 h3"><a href="{% url 'profile' user.id %}" class="text-primary h6 text-decoration-none">{{user.username}}</a></strong>
+                        </div>
+                        <div class="mb-1 w-50 mt-2 text-right text-muted">
+                            <a class="text-decoration-none" href="{% url 'post-create' %}"><button class="btn btn-outline-info" type="submit">Create Post</button></a>
+                        </div>
+                    </div>
                 </div>
-                <div class="media-body w-50">
-                    <strong class="d-inline-block mt-2 mb-2 text-primary w-100 h3"><a href="{% url 'profile' user.id %}" class="text-primary h6 text-decoration-none">{{user.username}}</a></strong>
+            </div>
+        </div>
+        <div class="infinite-container">
+            {% for post in posts %}
+                <div class="md-6">
+                    <div class="col no-gutters border rounded overflow-hidden flex-md-row mb-2 shadow-sm h-md-250 position-relative">
+                        <div class="col w-100 p-2 d-flex flex-column position-static">
+                            <div class="row w-100 d-flex flex-row position-static">
+                                <div class="media-left" style="height: 55px;overflow:hidden;">
+                                    <img class=" img-fluid" style="width:50px; margin: 10px;" src="{{post.author.profile.image.url}}"> 
+                                </div>
+                                <div class="media-body mt-2">
+                                    <strong class="mt-2 mb-2 text-primary w-50 text-decoration-none"><a href="{% url 'profile' post.author.id %}">{{post.author}}</a></strong>
+                                    <em class="text-muted">{{post.status}}</em>
+                                </div>
+                                <div class="mb-1 w-50 mt-2 text-right text-muted">{{post.Date|date:"F d,Y"}}</div>
+                            </div>
+                            {% if post.image %}
+                            <div class="w-100 " style="max-height: 300px;overflow:hidden;">
+                            <a href="{% url 'detail-view' post.id %}"><img class="img-fluid " style="max-height: 300px;margin: 10px;" src="{{post.image.url}}"> </a>
+                            </div>
+                            {% endif %}
+                            <h3 class="mb-0"><a href="{% url 'detail-view' post.id %}" class="article-title text-decoration-none text-dark">{{post.title}}</a></h3>
+                            <p class="card-text m-4">{{post.content}}</p>
+                        </div>
+                    </div>
                 </div>
-                <div class="mb-1 w-50 mt-2 text-right text-muted">
-                    <a class="text-decoration-none" href="{% url 'post-create' %}"><button class="btn btn-outline-info" type="submit">Create Post</button></a>
+            {% endfor %}
+            {% if posts.has_other_pages %}
+                <ul class="pagination">
+                    {% if posts.has_previous %}
+                        <li><a class="text-primery" href="?page={{ posts.previous_page_number }}"><button class='btn btn-outline-info'>&laquo;</button></a></li>
+                    {% else %}
+                        <li class="disabled"><button class='btn btn-secondary btn-outline-secondary'><span>&laquo;</span></button></li>
+                    {% endif %}
+                    {% for i in posts.paginator.page_range %}
+                        {% if posts.number == i %}
+                            <li class="active"><button class='btn btn-success btn-outline-success'><span>{{ i }} </span></button></li>
+                        {% else %}
+                            <li><a href="?page={{ i }}"><button class='btn btn-outline-info'>{{ i }}</button></a></li>
+                        {% endif %}
+                    {% endfor %}
+                    {% if posts.has_next %}
+                        <li><a href="?page={{ posts.next_page_number }}"><button class='btn btn-outline-info'>&raquo;</button></a></li>
+                    {% else %}
+                        <li class="disabled"><button class='btn btn-secondary btn-outline-secondary'><span>&raquo;</span></button></li>
+                    {% endif %}
+                </ul>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock content%}
+{% block sidebar %}
+<div class="sidebar custom">
+    <div class="text-white mb-4 mr-2 rounded h-md-250">
+        <div class="md-6 mt-0">
+            <div class="col no-gutters border rounded overflow-hidden p-0 flex-md-row mb-2 shadow-sm h-md-250 position-relative">
+                <div class="w-100 d-flex flex-column position-static">
+                    <div class="row w-100 p-2 ml-0 d-flex flex-col ">            
+                        <div class=" w-100" style="overflow:hidden;">
+                            <img class=" img-fluid" src="{{user.profile.image.url}}"> 
+                        </div>
+                        <div class="w-100">
+                            <strong class="d-inline-block my-2 text-primary"><a href="{% url 'profile' user.id %}" class="text-primary h1 text-decoration-none">{{user.username}}</a></strong>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-<div class="infinite-container">
+    <div class="alert alert-info h3">Notifications</div>
     {% for post in posts %}
         <div class="md-6">
+            <a href="{% url 'detail-view' post.id %}">
             <div class="col no-gutters border rounded overflow-hidden flex-md-row mb-2 shadow-sm h-md-250 position-relative">
                 <div class="col w-100 p-2 d-flex flex-column position-static">
                     <div class="row w-100 d-flex flex-row position-static">
                         <div class="media-left" style="height: 55px;overflow:hidden;">
                             <img class=" img-fluid" style="width:50px; margin: 10px;" src="{{post.author.profile.image.url}}"> 
                         </div>
-                        <div class="media-body">
-                            <strong class="d-inline-block mt-2 mb-2 text-primary w-50"><a href="{% url 'profile' post.author.id %}" class="text-decoration-none">{{post.author}}</a></strong>
+                        <div class="media-body mt-2">
+                            <strong class="mt-2 mb-2 text-primary w-50 text-decoration-none">{{post.author}}</strong>
+                            <em class="text-muted">{{post.status}}</em>
                         </div>
                         <div class="mb-1 w-50 mt-2 text-right text-muted">{{post.Date|date:"F d,Y"}}</div>
                     </div>
-                    {% if post.image %}
-                    <div class="w-100 " style="max-height: 300px;overflow:hidden;">
-                    <a href="{% url 'detail-view' post.id %}"><img class="img-fluid " style="max-height: 300px;margin: 10px;" src="{{post.image.url}}"> </a>
-                    </div>
-                    {% endif %}
-                    <h3 class="mb-0"><a href="{% url 'detail-view' post.id %}" class="article-title text-decoration-none text-dark">{{post.title}}</a></h3>
-                    <p class="card-text m-4">{{post.content}}</p>
                 </div>
             </div>
+            </a>
         </div>
     {% endfor %}
-    {% if posts.has_other_pages %}
-        <ul class="pagination">
-            {% if posts.has_previous %}
-                <li><a class="text-primery" href="?page={{ posts.previous_page_number }}"><button class='btn btn-outline-info'>&laquo;</button></a></li>
-            {% else %}
-                <li class="disabled"><button class='btn btn-secondary btn-outline-secondary'><span>&laquo;</span></button></li>
-            {% endif %}
-            {% for i in posts.paginator.page_range %}
-                {% if posts.number == i %}
-                    <li class="active"><button class='btn btn-success btn-outline-success'><span>{{ i }} </span></button></li>
-                {% else %}
-                    <li><a href="?page={{ i }}"><button class='btn btn-outline-info'>{{ i }}</button></a></li>
-                {% endif %}
-            {% endfor %}
-            {% if posts.has_next %}
-                <li><a href="?page={{ posts.next_page_number }}"><button class='btn btn-outline-info'>&raquo;</button></a></li>
-            {% else %}
-                <li class="disabled"><button class='btn btn-secondary btn-outline-secondary'><span>&raquo;</span></button></li>
-            {% endif %}
-        </ul>
-    {% endif %}
 </div>
+{% endblock sidebar %}
 
-{% endblock content%}

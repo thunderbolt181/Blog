@@ -349,13 +349,15 @@ iframe {
   -moz-transition: all 0.4s;
   transition: all 0.4s;
 }
-
+.custom{
+  width: 45%;
+}
+.custom-content-profile{
+  display: none;
+}
 .login100-form-btn:hover {
   background: #333333;
 }
-
-
-
 /*------------------------------------------------------------------
 [ Responsive ]*/
 
@@ -375,7 +377,12 @@ iframe {
     box-sizing: border-box;
     margin-bottom: 50px;
   }
-
+  .custom{
+    display: none;
+  }
+  .custom-content-profile{
+    display: block;
+  }
   .login100-form {
     box-sizing: content-box;
     box-sizing: border-box;
@@ -388,11 +395,7 @@ iframe {
     box-sizing: border-box;
     padding: 50px 80px 33px 80px;
   }
-  .custom{
-    flex-direction: column; 
-    justify-content: space-evenly;
-    width: 100%;
-  }
+  
   .login100-pic {
     width: 100%;
     display: flex;
