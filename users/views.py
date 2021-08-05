@@ -48,7 +48,8 @@ def profile_update(request):
         u_form = EditUserForm(request.POST, instance=request.user)
         p_form = EditProfileForm(request.POST, request.FILES, instance=request.user.profile)
         if u_form.is_valid() and p_form.is_valid():
-            os.remove(image_url)
+            if "default" not in image_url:
+                os.remove(image_url)
             u_form.save()
             p_form.save()
             if "media"+str(p_form.cleaned_data['image']) not in request.user.profile.image.url:
