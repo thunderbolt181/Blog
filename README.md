@@ -21,5 +21,3 @@
 - 1. Set *DEBUG=False*.
 - 2. Hide *SECRET_KEY*.
 - 3. Hide passwords, username or any other important information in environment variables.
-
-# This project is not licensed. Use and Modify it on your will
