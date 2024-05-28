@@ -10,6 +10,7 @@ from django.shortcuts import render, redirect
 from blog.models import Post
 from django.contrib.auth.models import User
 import os
+from .models import DEFAULT_IMAGE
 
 def register(request):
     if request.method == "POST":
@@ -48,15 +49,22 @@ def profile_update(request):
         u_form = EditUserForm(request.POST, instance=request.user)
         p_form = EditProfileForm(request.POST, request.FILES, instance=request.user.profile)
         if u_form.is_valid() and p_form.is_valid():
-            if "default" not in image_url:
-                os.remove(image_url)
             u_form.save()
-            p_form.save()
-            if "media"+str(p_form.cleaned_data['image']) not in request.user.profile.image.url:
-                Post(image=p_form.cleaned_data['image'],
-                   status='Updated Proile Picture',
-                   Date=timezone.now(),
-                   author=request.user).save()
+            temp_p_form = p_form.save(commit=False)
+            try:
+                if "image-clear" in u_form.data.keys():
+                    temp_p_form.image = DEFAULT_IMAGE
+                    temp_p_form.save()
+                    os.remove(image_url)
+                else:
+                    p_form.save()
+                    if "media"+str(p_form.cleaned_data['image']) not in request.user.profile.image.url:
+                        Post(image=p_form.cleaned_data['image'],
+                        status='Updated Proile Picture',
+                        Date=timezone.now(),
+                        author=request.user).save()
+            except Exception as e:
+                print(e)
             return redirect('profile',post_author_id=request.user.id)
     else:
         u_form = EditUserForm(instance=request.user)

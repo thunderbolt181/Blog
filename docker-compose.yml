@@ -1,0 +1,15 @@
+services:
+  web:
+    restart: always
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    container_name: thunderblog_container
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+    environment:
+      DEBUG: true
+    
